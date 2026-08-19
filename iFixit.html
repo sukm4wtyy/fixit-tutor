@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fixit - AI-Powered Car & Motorcycle Repair</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Custom Tailwind Configuration -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            DEFAULT: '#b33939',
+                            light: '#d64545',
+                            dark: '#8c2929',
+                            glow: 'rgba(179, 57, 57, 0.5)'
+                        },
+                        darkbg: {
+                            900: '#08080a',
+                            800: '#101014',
+                            700: '#181820',
+                            600: '#22222d'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Space Grotesk', 'sans-serif']
+                    },
+                    boxShadow: {
+                        'neon': '0 0 20px rgba(179, 57, 57, 0.45), 0 0 40px rgba(179, 57, 57, 0.2)',
+                        'neon-lg': '0 0 30px rgba(179, 57, 57, 0.65), 0 0 60px rgba(179, 57, 57, 0.3)',
+                        'neon-sm': '0 0 10px rgba(179, 57, 57, 0.5)',
+                        'neon-inset': 'inset 0 0 15px rgba(179, 57, 57, 0.3)'
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Custom Styles for Neon Glow & Animations -->
+    <style>
+        .neon-text-glow {
+            text-shadow: 0 0 12px rgba(179, 57, 57, 0.8), 0 0 25px rgba(179, 57, 57, 0.4);
+        }
+        .neon-border {
+            border-color: #b33939;
+            box-shadow: 0 0 15px rgba(179, 57, 57, 0.4);
+        }
+        .bg-grid-pattern {
+            background-image: radial-gradient(rgba(179, 57, 57, 0.15) 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+        .glass-card {
+            background: rgba(24, 24, 32, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .glass-card-hover:hover {
+            border-color: rgba(179, 57, 57, 0.6);
+            box-shadow: 0 0 25px rgba(179, 57, 57, 0.3);
+        }
+        @keyframes pulse-slow {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(1.05); }
+        }
+        .animate-pulse-slow {
+            animation: pulse-slow 4s infinite ease-in-out;
+        }
+    </style>
+</head>
+<body class="bg-darkbg-900 text-slate-100 font-sans selection:bg-brand selection:text-white antialiased overflow-x-hidden">
+
+    <!-- Navigation Header -->
+    <header class="fixed top-0 left-0 right-0 z-50 bg-darkbg-900/80 backdrop-blur-md border-b border-slate-800/80 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <!-- Brand Logo -->
+            <a href="#" class="flex items-center gap-2 group">
+                <div class="w-10 h-10 rounded-xl bg-brand/20 border border-brand flex items-center justify-center shadow-neon-sm group-hover:shadow-neon transition-all">
+                    <i data-lucide="cpu" class="w-6 h-6 text-brand"></i>
+                </div>
+                <div class="flex flex-col">
+                    <span class="font-display font-extrabold text-2xl tracking-wider text-white">FIX<span class="text-brand neon-text-glow">IT</span></span>
+                    <span class="text-[9px] uppercase tracking-widest text-slate-400 font-semibold">AI Auto Tech</span>
+                </div>
+            </a>
+
+            <!-- Desktop Nav Links -->
+            <nav class="hidden md:flex items-center gap-8">
+                <a href="#services" class="text-sm font-medium text-slate-300 hover:text-brand transition-colors">Services</a>
+                <a href="#ai-diagnose" class="text-sm font-medium text-slate-300 hover:text-brand transition-colors flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-brand animate-ping"></span> AI Diagnostic
+                </a>
+                <a href="#about" class="text-sm font-medium text-slate-300 hover:text-brand transition-colors">About Us</a>
+                <a href="#team" class="text-sm font-medium text-slate-300 hover:text-brand transition-colors">Team</a>
+                <a href="#contact" class="text-sm font-medium text-slate-300 hover:text-brand transition-colors">Contact</a>
+            </nav>
+
+            <!-- CTA Header Buttons -->
+            <div class="hidden sm:flex items-center gap-3">
+                <a href="tel:+62216504848" class="px-4 py-2 rounded-xl bg-darkbg-700 hover:bg-darkbg-600 border border-slate-700 text-slate-200 text-xs font-semibold flex items-center gap-2 transition-all">
+                    <i data-lucide="phone" class="w-3.5 h-3.5 text-brand"></i>
+                    (+62) 21 650-4848
+                </a>
+                <a href="#contact" class="px-5 py-2 rounded-xl bg-brand hover:bg-brand-light text-white text-xs font-bold uppercase tracking-wider shadow-neon hover:shadow-neon-lg transition-all duration-300">
+                    Book Now
+                </a>
+            </div>
+
+            <!-- Mobile Hamburger Button -->
+            <button id="mobile-menu-btn" class="md:hidden p-2 rounded-lg bg-darkbg-800 border border-slate-700 text-slate-300 hover:text-white focus:outline-none">
+                <i data-lucide="menu" class="w-6 h-6"></i>
+            </button>
+        </div>
+
+        <!-- Mobile Menu Overlay -->
+        <div id="mobile-menu" class="hidden md:hidden bg-darkbg-800 border-b border-slate-700 px-6 py-6 space-y-4">
+            <a href="#services" class="mobile-nav-link block text-slate-200 font-medium hover:text-brand">Services</a>
+            <a href="#ai-diagnose" class="mobile-nav-link block text-slate-200 font-medium hover:text-brand">AI Diagnostic Tool</a>
+            <a href="#about" class="mobile-nav-link block text-slate-200 font-medium hover:text-brand">About Us</a>
+            <a href="#team" class="mobile-nav-link block text-slate-200 font-medium hover:text-brand">Our Team</a>
+            <a href="#contact" class="mobile-nav-link block text-slate-200 font-medium hover:text-brand">Contact Us</a>
+            <div class="pt-4 border-t border-slate-700 flex flex-col gap-3">
+                <a href="tel:+62216504848" class="w-full py-3 rounded-xl bg-darkbg-700 text-center text-slate-200 font-semibold text-sm flex items-center justify-center gap-2">
+                    <i data-lucide="phone" class="w-4 h-4 text-brand"></i> Call (+62) 21 650-4848
+                </a>
+                <a href="#contact" class="mobile-nav-link w-full py-3 rounded-xl bg-brand text-center text-white font-bold text-sm shadow-neon">
+                    Book Reservation
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="relative pt-32 pb-20 lg:pt-44 lg:pb-32 bg-grid-pattern overflow-hidden">
+        <!-- Ambient Glowing Orbs -->
+        <div class="absolute top-1/4 -left-32 w-96 h-96 bg-brand/20 rounded-full blur-[120px] pointer-events-none animate-pulse-slow"></div>
+        <div class="absolute bottom-10 -right-32 w-96 h-96 bg-brand/15 rounded-full blur-[140px] pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid lg:grid-cols-12 gap-12 items-center">
+                
+                <!-- Left Hero Text -->
+                <div class="lg:col-span-7 space-y-8 text-center lg:text-left">
+                    <!-- Tech Badge -->
+                    <div class="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-darkbg-800/90 border border-brand/50 shadow-neon-sm">
+                        <span class="flex h-2 w-2 rounded-full bg-brand animate-ping"></span>
+                        <span class="text-xs font-semibold text-slate-200 uppercase tracking-widest">
+                            Next-Gen Auto Care Hub
+                        </span>
+                    </div>
+
+                    <!-- Main Headline -->
+                    <h1 class="text-4xl sm:text-6xl lg:text-7xl font-display font-extrabold text-white tracking-tight leading-tight">
+                        Fixit <br />
+                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-200 to-brand neon-text-glow">
+                            AI-Powered Car & Motorcycle Repair
+                        </span>
+                    </h1>
+
+                    <!-- Description -->
+                    <p class="text-slate-300 text-base sm:text-lg lg:text-xl max-w-2xl mx-auto lg:mx-0 leading-relaxed font-normal">
+                        Experience the future of auto repair. Diagnose vehicle issues instantly with AI guidance for step-by-step DIY fixes, or request our certified home service fleet and full-facility Jakarta workshop.
+                    </p>
+
+                    <!-- Dual CTA Buttons -->
+                    <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
+                        <!-- CTA 1: Call Now -->
+                        <a href="tel:+62216504848" class="w-full sm:w-auto px-8 py-4 rounded-2xl bg-darkbg-800 hover:bg-darkbg-700 text-white font-bold text-base border-2 border-brand shadow-neon hover:shadow-neon-lg transition-all duration-300 flex items-center justify-center gap-3 group">
+                            <i data-lucide="phone-call" class="w-5 h-5 text-brand group-hover:scale-110 transition-transform"></i>
+                            Call Now
+                        </a>
+
+                        <!-- CTA 2: Book Reservation -->
+                        <a href="#contact" class="w-full sm:w-auto px-8 py-4 rounded-2xl bg-brand hover:bg-brand-light text-white font-bold text-base shadow-neon hover:shadow-neon-lg transition-all duration-300 flex items-center justify-center gap-3 group">
+                            <i data-lucide="calendar-check" class="w-5 h-5 group-hover:rotate-12 transition-transform"></i>
+                            Book Reservation
+                        </a>
+                    </div>
+
+                    <!-- Trust Stats Bar -->
+                    <div class="pt-8 border-t border-slate-800/80 grid grid-cols-3 gap-4 text-center lg:text-left">
+                        <div>
+                            <p class="text-2xl sm:text-3xl font-display font-bold text-white">99.4%</p>
+                            <p class="text-xs text-slate-400 mt-1">AI Diagnostic Accuracy</p>
+                        </div>
+                        <div>
+                            <p class="text-2xl sm:text-3xl font-display font-bold text-brand neon-text-glow">30 Min</p>
+                            <p class="text-xs text-slate-400 mt-1">Home Service Arrival</p>
+                        </div>
+                        <div>
+                            <p class="text-2xl sm:text-3xl font-display font-bold text-white">15,000+</p>
+                            <p class="text-xs text-slate-400 mt-1">Vehicles Serviced</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Hero Visual: Interactive HUD Card -->
+                <div class="lg:col-span-5 flex justify-center">
+                    <div class="relative w-full max-w-md">
+                        <!-- Glowing Backing Frame -->
+                        <div class="absolute -inset-1 bg-gradient-to-r from-brand via-red-600 to-brand-dark rounded-3xl blur-lg opacity-60 animate-pulse"></div>
+                        
+                        <div class="relative glass-card rounded-3xl p-6 sm:p-8 space-y-6 border border-brand/40 shadow-neon">
+                            <!-- HUD Top Bar -->
+                            <div class="flex items-center justify-between pb-4 border-b border-slate-800">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-3 h-3 rounded-full bg-emerald-500 animate-ping"></span>
+                                    <span class="font-mono text-xs text-emerald-400 font-semibold tracking-wider uppercase">AI Telemetry Active</span>
+                                </div>
+                                <span class="font-mono text-xs text-slate-400">v3.4.1</span>
+                            </div>
+
+                            <!-- Vehicle Selector Tabs -->
+                            <div class="grid grid-cols-2 gap-2 p-1.5 bg-darkbg-900 rounded-xl border border-slate-800">
+                                <button class="py-2 px-4 rounded-lg bg-brand text-white text-xs font-bold flex items-center justify-center gap-2 shadow-neon-sm">
+                                    <i data-lucide="car" class="w-4 h-4"></i> Car System
+                                </button>
+                                <button class="py-2 px-4 rounded-lg bg-transparent hover:bg-darkbg-700 text-slate-400 text-xs font-bold flex items-center justify-center gap-2 transition-colors">
+                                    <i data-lucide="bike" class="w-4 h-4"></i> Motorcycle
+                                </button>
+                            </div>
+
+                            <!-- Diagnostic Simulation Item -->
+                            <div class="space-y-3">
+                                <div class="flex justify-between text-xs font-mono">
+                                    <span class="text-slate-400">Scan Status:</span>
+                                    <span class="text-brand font-semibold">Engine Block Analysis</span>
+                                </div>
+                                <div class="w-full h-2 bg-darkbg-900 rounded-full overflow-hidden p-0.5 border border-slate-800">
+                                    <div class="h-full bg-brand rounded-full w-3/4 shadow-neon-sm animate-pulse"></div>
+                                </div>
+                            </div>
+
+                            <!-- AI Recommendation Box -->
+                            <div class="p-4 rounded-2xl bg-darkbg-900/90 border border-slate-800 space-y-2">
+                                <div class="flex items-center gap-2 text-brand text-xs font-bold uppercase tracking-wider">
+                                    <i data-lucide="sparkles" class="w-4 h-4"></i> Instant AI Suggestion
+                                </div>
+                                <p class="text-xs text-slate-300 leading-relaxed font-sans">
+                                    "Code P0300 detected: Engine Misfire. Recommend DIY Spark Plug check or schedule a Home Service technician."
+                                </p>
+                            </div>
+
+                            <!-- Interactive Button trigger -->
+                            <a href="#ai-diagnose" class="w-full py-3 rounded-xl bg-darkbg-700 hover:bg-darkbg-600 border border-brand/50 text-slate-200 text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-all group">
+                                Try AI Scanner Interactive Tool
+                                <i data-lucide="arrow-right" class="w-4 h-4 text-brand group-hover:translate-x-1 transition-transform"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Our Services Section -->
+    <section id="services" class="py-24 bg-darkbg-800/60 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Section Header -->
+            <div class="text-center max-w-3xl mx-auto space-y-4 mb-16">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand/10 border border-brand/30 text-brand text-xs font-bold uppercase tracking-widest">
+                    <i data-lucide="wrench" class="w-3.5 h-3.5"></i> Comprehensive Solutions
+                </div>
+                <h2 class="text-3xl sm:text-5xl font-display font-extrabold text-white tracking-tight">
+                    Our Specialized Services
+                </h2>
+                <p class="text-slate-400 text-base sm:text-lg">
+                    Whether you want to fix it yourself with AI guidance, need repair at your doorstep, or require deep shop diagnostics—we’ve got you covered.
+                </p>
+            </div>
+
+            <!-- 3 Service Cards Grid -->
+            <div class="grid md:grid-cols-3 gap-8">
+                
+                <!-- Card 1: AI DIY Fixing -->
+                <div class="glass-card rounded-3xl p-8 space-y-6 border border-slate-800 glass-card-hover transition-all duration-300 group relative flex flex-col justify-between">
+                    <div class="space-y-6">
+                        <div class="w-14 h-14 rounded-2xl bg-brand/10 border border-brand flex items-center justify-center text-brand shadow-neon-sm group-hover:scale-110 transition-transform">
+                            <i data-lucide="bot" class="w-7 h-7"></i>
+                        </div>
+                        <span class="px-3 py-1 rounded-full text-[10px] font-mono uppercase tracking-wider bg-brand/20 text-brand border border-brand/40 font-bold">
+                            Self-Service
+                        </span>
+                        <h3 class="text-2xl font-display font-bold text-white group-hover:text-brand transition-colors">
+                            AI DIY Fixing
+                        </h3>
+                        <p class="text-slate-400 text-sm leading-relaxed">
+                            Step-by-step AI-assisted troubleshooting for cars and motorcycles. Receive interactive visual guides, torque specs, and diagnostic codes directly on your mobile device.
+                        </p>
+                        <ul class="space-y-2.5 pt-2">
+                            <li class="flex items-center gap-2.5 text-xs text-slate-300">
+                                <i data-lucide="check-circle-2" class="w-4 h-4 text-brand"></i>
+                                Real-time AI symptom scanner
+                            </li>
+                            <li class="flex items-center gap-2.5 text-xs text-slate-300">
+                                <i data-lucide="check-circle-2" class="w-4 h-4 text-brand"></i>
+                                AR & video visual walkthroughs
+                            </li>
+                            <li class="flex items-center gap-2.5 text-xs text-slate-300">
+                                <i data-lucide="check-circle-2" class="w-4 h-4 text-brand"></i>
+                                Instant OEM parts order links
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="pt-6">
+                        <a href="#ai-diagnose" class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-brand hover:text-white transition-colors">
+                            Try AI Assistant <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Card 2: Home Service -->
+                <div class="glass-card rounded-3xl p-8 space-y-6 border border-slate-800 glass-card-hover transition-all duration-300 group relative flex flex-col justify-between">
+                    <div class="space-y-6">
+                        <div class="w-14 h-14 rounded-2xl bg-brand/10 border border-brand flex items-center justify-center text-brand shadow-neon-sm group-hover:scale-110 transition-transform">
+                            <i data-lucide="truck" class="w-7 h-7"></i>
+                        </div>
+                        <span class="px-3 py-1 rounded-full text-[10px] font-mono uppercase tracking-wider bg-brand/20 text-brand border border-brand/40 font-bold">
+                            On-Demand Mobile
+                        </span>
+                        <h3 class="text-2xl font-display font-bold text-white group-hover:text-brand transition-colors">
+                            Home Service
+                        </h3>
+                        <p class="text-slate-400 text-sm leading-relaxed">
+                            Can't bring your vehicle in? Our mobile service van comes fully equipped directly to your home or office anywhere in Jakarta and surrounding regions.
+                        </p>
+                        <ul class="space-y-2.5 pt-2">
+                            <li class="flex items-center gap-2.5 text-xs text-slate-300">
+                                <i data-lucide="check-circle-2" class="w-4 h-4 text-brand"></i>
+                                Emergency roadside assistance
+                            </li>
+                            <li class="flex items-center gap-2.5 text-xs text-slate-300">
+                                <i data-lucide="check-circle-2" class="w-4 h-4 text-brand"></i>
+                                Routine maintenance & oil changes
+                            </li>
+                            <li class="flex items-center gap-2.5 text-xs text-slate-300">
+                                <i data-lucide="check-circle-2" class="w-4 h-4 text-brand"></i>
+                                Battery & electrical system replacements
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="pt-6">
+                        <a href="#contact" class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-brand hover:text-white transition-colors">
+                            Request Mobile Van <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Card 3: In-Store Service -->
+                <div class="glass-card rounded-3xl p-8 space-y-6 border border-slate-800 glass-card-hover transition-all duration-300 group relative flex flex-col justify-between">
+                    <div class="space-y-6">
+                        <div class="w-14 h-14 rounded-2xl bg-brand/10 border border-brand flex items-center justify-center text-brand shadow-neon-sm group-hover:scale-110 transition-transform">
+                            <i data-lucide="warehouse" class="w-7 h-7"></i>
+                        </div>
+                        <span class="px-3 py-1 rounded-full text-[10px] font-mono uppercase tracking-wider bg-brand/20 text-brand border border-brand/40 font-bold">
+                            Full Workshop
+                        </span>
+                        <h3 class="text-2xl font-display font-bold text-white group-hover:text-brand transition-colors">
+                            In-Store Service
+                        </h3>
+                        <p class="text-slate-400 text-sm leading-relaxed">
+                            For complex jobs requiring heavy lifts, computer calibration, or engine overhauls. Visit our state-of-the-art Sunter facility with certified master technicians.
+                        </p>
+                        <ul class="space-y-2.5 pt-2">
+                            <li class="flex items-center gap-2.5 text-xs text-slate-300">
+                                <i data-lucide="check-circle-2" class="w-4 h-4 text-brand"></i>
+                                Major engine & transmission rebuilds
+                            </li>
+                            <li class="flex items-center gap-2.5 text-xs text-slate-300">
+                                <i data-lucide="check-circle-2" class="w-4 h-4 text-brand"></i>
+                                Advanced 3D wheel alignment & suspension
+                            </li>
+                            <li class="flex items-center gap-2.5 text-xs text-slate-300">
+                                <i data-lucide="check-circle-2" class="w-4 h-4 text-brand"></i>
+                                ECU tuning & high-tech diagnostics
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="pt-6">
+                        <a href="#contact" class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-brand hover:text-white transition-colors">
+                            Book In-Store Slot <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive AI Diagnostic Tool Widget -->
+    <section id="ai-diagnose" class="py-20 bg-darkbg-900 border-y border-slate-800/80 relative">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="glass-card rounded-3xl p-6 sm:p-10 border border-brand/30 shadow-neon">
+                
+                <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-8 pb-6 border-b border-slate-800">
+                    <div>
+                        <div class="flex items-center gap-2 text-brand font-mono text-xs font-bold uppercase tracking-widest mb-1">
+                            <i data-lucide="sparkles" class="w-4 h-4"></i> Interactive Simulator
+                        </div>
+                        <h3 class="text-2xl sm:text-3xl font-display font-bold text-white">Fixit AI Diagnostic Preview</h3>
+                    </div>
+                    <span class="text-xs text-slate-400 bg-darkbg-800 px-3 py-1.5 rounded-full border border-slate-700 font-mono">
+                        Select symptom to analyze
+                    </span>
+                </div>
+
+                <div class="grid md:grid-cols-12 gap-8 items-center">
+                    <!-- Issue Selector Buttons -->
+                    <div class="md:col-span-5 space-y-3">
+                        <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Select Issue Symptom:</p>
+                        
+                        <button onclick="setAiSim('squeaking')" id="sim-btn-squeaking" class="sim-btn w-full p-3.5 rounded-2xl bg-darkbg-800 hover:bg-darkbg-700 border border-brand text-left text-xs font-semibold text-white flex items-center justify-between transition-all">
+                            <span class="flex items-center gap-2">
+                                <i data-lucide="disc" class="w-4 h-4 text-brand"></i> High Pitch Brake Squeal
+                            </span>
+                            <i data-lucide="chevron-right" class="w-4 h-4 text-slate-500"></i>
+                        </button>
+
+                        <button onclick="setAiSim('clicking')" id="sim-btn-clicking" class="sim-btn w-full p-3.5 rounded-2xl bg-darkbg-800 hover:bg-darkbg-700 border border-slate-800 text-left text-xs font-semibold text-slate-300 flex items-center justify-between transition-all">
+                            <span class="flex items-center gap-2">
+                                <i data-lucide="zap-off" class="w-4 h-4 text-amber-400"></i> Engine Rapid Clicking / No Start
+                            </span>
+                            <i data-lucide="chevron-right" class="w-4 h-4 text-slate-500"></i>
+                        </button>
+
+                        <button onclick="setAiSim('smoke')" id="sim-btn-smoke" class="sim-btn w-full p-3.5 rounded-2xl bg-darkbg-800 hover:bg-darkbg-700 border border-slate-800 text-left text-xs font-semibold text-slate-300 flex items-center justify-between transition-all">
+                            <span class="flex items-center gap-2">
+                                <i data-lucide="cloud" class="w-4 h-4 text-cyan-400"></i> White Smoke from Exhaust
+                            </span>
+                            <i data-lucide="chevron-right" class="w-4 h-4 text-slate-500"></i>
+                        </button>
+
+                        <button onclick="setAiSim('vibration')" id="sim-btn-vibration" class="sim-btn w-full p-3.5 rounded-2xl bg-darkbg-800 hover:bg-darkbg-700 border border-slate-800 text-left text-xs font-semibold text-slate-300 flex items-center justify-between transition-all">
+                            <span class="flex items-center gap-2">
+                                <i data-lucide="activity" class="w-4 h-4 text-purple-400"></i> Steering Wheel Vibration at 80km/h
+                            </span>
+                            <i data-lucide="chevron-right" class="w-4 h-4 text-slate-500"></i>
+                        </button>
+                    </div>
+
+                    <!-- Output Display Console -->
+                    <div class="md:col-span-7 bg-darkbg-900 rounded-2xl p-6 border border-slate-800 font-mono space-y-4">
+                        <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                            <span class="text-[11px] text-slate-400">Fixit AI Neural Core Engine</span>
+                            <span id="sim-confidence" class="text-xs text-emerald-400 font-bold">98.2% Match</span>
+                        </div>
+
+                        <div>
+                            <p class="text-[10px] text-slate-500 uppercase tracking-widest">Probable Cause</p>
+                            <h4 id="sim-cause" class="text-base font-bold text-white mt-0.5">Worn Brake Brake Pads / Wear Sensor</h4>
+                        </div>
+
+                        <div>
+                            <p class="text-[10px] text-slate-500 uppercase tracking-widest">Recommended Action</p>
+                            <p id="sim-action" class="text-xs text-slate-300 mt-0.5 leading-relaxed">
+                                DIY replace front ceramic pads (Difficulty: Moderate - 45 mins). Or order Fixit Home Service for quick driveway replacement.
+                            </p>
+                        </div>
+
+                        <div class="pt-3 border-t border-slate-800 flex items-center justify-between text-xs">
+                            <span class="text-slate-400">Estimated DIY Cost: <strong id="sim-cost" class="text-white">Rp 250.000</strong></span>
+                            <a href="#contact" class="px-3 py-1.5 rounded-lg bg-brand text-white font-sans font-bold hover:bg-brand-light transition-colors">
+                                Book Repair
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- About Us Section -->
+    <section id="about" class="py-24 bg-darkbg-900 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-12 gap-12 items-center">
+                
+                <!-- Story Graphics / Imagery -->
+                <div class="lg:col-span-5">
+                    <div class="relative">
+                        <div class="absolute -inset-1 bg-gradient-to-r from-brand to-red-900 rounded-3xl blur-lg opacity-40"></div>
+                        <div class="relative rounded-3xl overflow-hidden border border-slate-800 bg-darkbg-800 p-8 space-y-6">
+                            <div class="flex items-center gap-3">
+                                <div class="w-12 h-12 rounded-xl bg-brand/20 border border-brand flex items-center justify-center text-brand">
+                                    <i data-lucide="shield-check" class="w-6 h-6"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-display font-bold text-white">Certified Excellence</h4>
+                                    <p class="text-xs text-slate-400">Sunter II Headquarters, Jakarta</p>
+                                </div>
+                            </div>
+                            <p class="text-slate-300 text-xs leading-relaxed font-sans">
+                                Combining traditional mechanical mastery with cutting-edge artificial intelligence to revolutionize vehicle maintenance across Indonesia.
+                            </p>
+                            <div class="grid grid-cols-2 gap-4 pt-4 border-t border-slate-800">
+                                <div class="bg-darkbg-900 p-3.5 rounded-xl border border-slate-800">
+                                    <p class="text-xs text-slate-400">Location</p>
+                                    <p class="text-xs font-bold text-white mt-1">Sunter II, North Jakarta</p>
+                                </div>
+                                <div class="bg-darkbg-900 p-3.5 rounded-xl border border-slate-800">
+                                    <p class="text-xs text-slate-400">Supported Vehicles</p>
+                                    <p class="text-xs font-bold text-white mt-1">Cars & Motorcycles</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Story Text -->
+                <div class="lg:col-span-7 space-y-6">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand/10 border border-brand/30 text-brand text-xs font-bold uppercase tracking-widest">
+                        <i data-lucide="award" class="w-3.5 h-3.5"></i> About Fixit
+                    </div>
+                    <h2 class="text-3xl sm:text-5xl font-display font-extrabold text-white tracking-tight leading-tight">
+                        Revolutionizing Auto Repair Through <span class="text-brand neon-text-glow">Artificial Intelligence</span>
+                    </h2>
+                    <p class="text-slate-300 text-base leading-relaxed">
+                        Founded with a mission to eliminate overpriced repairs and mystery mechanic diagnoses, <strong>Fixit</strong> brings transparency, speed, and accuracy to car and motorcycle owners.
+                    </p>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        Our proprietary AI diagnostic platform analyzes engine telemetry, audio frequencies, and error codes to empower DIY repairers. For complex mechanical needs, our team of seasoned technicians in Sunter, North Jakarta provides top-tier home service and full-facility in-store overhauls.
+                    </p>
+
+                    <!-- Core Pillars -->
+                    <div class="grid sm:grid-cols-3 gap-4 pt-4">
+                        <div class="p-4 rounded-2xl bg-darkbg-800 border border-slate-800">
+                            <i data-lucide="cpu" class="w-5 h-5 text-brand mb-2"></i>
+                            <h4 class="text-sm font-bold text-white">Smart AI Guidance</h4>
+                            <p class="text-xs text-slate-400 mt-1">Instant telemetry scans & step-by-step guides.</p>
+                        </div>
+                        <div class="p-4 rounded-2xl bg-darkbg-800 border border-slate-800">
+                            <i data-lucide="map-pin" class="w-5 h-5 text-brand mb-2"></i>
+                            <h4 class="text-sm font-bold text-white">Jabodetabek Fleet</h4>
+                            <p class="text-xs text-slate-400 mt-1">Mobile units dispatched right to your doorstep.</p>
+                        </div>
+                        <div class="p-4 rounded-2xl bg-darkbg-800 border border-slate-800">
+                            <i data-lucide="dollar-sign" class="w-5 h-5 text-brand mb-2"></i>
+                            <h4 class="text-sm font-bold text-white">Transparent Pricing</h4>
+                            <p class="text-xs text-slate-400 mt-1">Upfront AI cost estimation with zero hidden fees.</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Meet Our Team Section -->
+    <section id="team" class="py-24 bg-darkbg-800/40 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Header -->
+            <div class="text-center max-w-3xl mx-auto space-y-4 mb-16">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand/10 border border-brand/30 text-brand text-xs font-bold uppercase tracking-widest">
+                    <i data-lucide="users" class="w-3.5 h-3.5"></i> Industry Experts
+                </div>
+                <h2 class="text-3xl sm:text-5xl font-display font-extrabold text-white tracking-tight">
+                    Meet Our Team
+                </h2>
+                <p class="text-slate-400 text-base">
+                    The visionaries, AI engineers, and master mechanics driving the future of automotive repair.
+                </p>
+            </div>
+
+            <!-- 4 Team Cards Grid -->
+            <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                
+                <!-- Team Member 1 -->
+                <div class="glass-card rounded-3xl p-6 border border-slate-800 text-center space-y-4 glass-card-hover transition-all duration-300 group">
+                    <div class="relative w-32 h-32 mx-auto rounded-full overflow-hidden border-2 border-brand/50 shadow-neon-sm group-hover:scale-105 transition-transform">
+                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80" alt="Budi Santoso" class="w-full h-full object-cover">
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold text-white group-hover:text-brand transition-colors">Budi Santoso</h3>
+                        <p class="text-xs font-mono text-brand font-semibold uppercase tracking-wider mt-0.5">Founder & CEO</p>
+                    </div>
+                    <p class="text-slate-400 text-xs leading-relaxed">
+                        Former Automotive AI researcher with 12+ years in automotive engineering and software systems.
+                    </p>
+                </div>
+
+                <!-- Team Member 2 -->
+                <div class="glass-card rounded-3xl p-6 border border-slate-800 text-center space-y-4 glass-card-hover transition-all duration-300 group">
+                    <div class="relative w-32 h-32 mx-auto rounded-full overflow-hidden border-2 border-brand/50 shadow-neon-sm group-hover:scale-105 transition-transform">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80" alt="Hendrik Wijaya" class="w-full h-full object-cover">
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold text-white group-hover:text-brand transition-colors">Hendrik Wijaya</h3>
+                        <p class="text-xs font-mono text-brand font-semibold uppercase tracking-wider mt-0.5">Master Mechanic Lead</p>
+                    </div>
+                    <p class="text-slate-400 text-xs leading-relaxed">
+                        ASE Certified Master Technician specializing in supercar & heavy motorcycle engine overhauls.
+                    </p>
+                </div>
+
+                <!-- Team Member 3 -->
+                <div class="glass-card rounded-3xl p-6 border border-slate-800 text-center space-y-4 glass-card-hover transition-all duration-300 group">
+                    <div class="relative w-32 h-32 mx-auto rounded-full overflow-hidden border-2 border-brand/50 shadow-neon-sm group-hover:scale-105 transition-transform">
+                        <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&q=80" alt="Siti Rahmawati" class="w-full h-full object-cover">
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold text-white group-hover:text-brand transition-colors">Siti Rahmawati</h3>
+                        <p class="text-xs font-mono text-brand font-semibold uppercase tracking-wider mt-0.5">Chief AI Engineer</p>
+                    </div>
+                    <p class="text-slate-400 text-xs leading-relaxed">
+                        Machine Learning Specialist leading our audio acoustic fault analysis and computer vision algorithms.
+                    </p>
+                </div>
+
+                <!-- Team Member 4 -->
+                <div class="glass-card rounded-3xl p-6 border border-slate-800 text-center space-y-4 glass-card-hover transition-all duration-300 group">
+                    <div class="relative w-32 h-32 mx-auto rounded-full overflow-hidden border-2 border-brand/50 shadow-neon-sm group-hover:scale-105 transition-transform">
+                        <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=400&q=80" alt="Rian Pratama" class="w-full h-full object-cover">
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold text-white group-hover:text-brand transition-colors">Rian Pratama</h3>
+                        <p class="text-xs font-mono text-brand font-semibold uppercase tracking-wider mt-0.5">Head of Mobile Fleet</p>
+                    </div>
+                    <p class="text-slate-400 text-xs leading-relaxed">
+                        Oversees 30+ mobile repair vans operating across Greater Jakarta with rapid dispatch technology.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Us & Booking Section -->
+    <section id="contact" class="py-24 bg-darkbg-900 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-12 gap-12">
+                
+                <!-- Left: Contact Details & Info -->
+                <div class="lg:col-span-5 space-y-8">
+                    <div>
+                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand/10 border border-brand/30 text-brand text-xs font-bold uppercase tracking-widest mb-3">
+                            <i data-lucide="map-pin" class="w-3.5 h-3.5"></i> Get In Touch
+                        </div>
+                        <h2 class="text-3xl sm:text-4xl font-display font-extrabold text-white tracking-tight">
+                            Visit or Contact Us
+                        </h2>
+                        <p class="text-slate-400 text-sm mt-2">
+                            Ready to schedule a service or talk to an advisor? Reach out via phone or fill in the booking reservation form.
+                        </p>
+                    </div>
+
+                    <div class="space-y-6">
+                        <!-- Address Box -->
+                        <div class="p-5 rounded-2xl bg-darkbg-800 border border-slate-800 flex items-start gap-4">
+                            <div class="p-3 rounded-xl bg-brand/10 border border-brand/40 text-brand shrink-0">
+                                <i data-lucide="map-pin" class="w-6 h-6"></i>
+                            </div>
+                            <div class="space-y-1">
+                                <h4 class="text-sm font-bold text-white">Head Workshop Address</h4>
+                                <p class="text-xs text-slate-300 leading-relaxed">
+                                    Jl. Gaya Motor Raya No. 3, Sunter II, Kec. Tanjung Priok, Jakarta Utara, DKI Jakarta 14330
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Phone Box -->
+                        <div class="p-5 rounded-2xl bg-darkbg-800 border border-slate-800 flex items-start gap-4">
+                            <div class="p-3 rounded-xl bg-brand/10 border border-brand/40 text-brand shrink-0">
+                                <i data-lucide="phone" class="w-6 h-6"></i>
+                            </div>
+                            <div class="space-y-1">
+                                <h4 class="text-sm font-bold text-white">Phone & Hotline</h4>
+                                <a href="tel:+62216504848" class="text-xs font-bold text-brand hover:underline block">
+                                    (+62) 21 650-4848
+                                </a>
+                                <p class="text-[11px] text-slate-400">Available Mon-Sat: 08:00 - 20:00 WIB</p>
+                            </div>
+                        </div>
+
+                        <!-- Working Hours Box -->
+                        <div class="p-5 rounded-2xl bg-darkbg-800 border border-slate-800 flex items-start gap-4">
+                            <div class="p-3 rounded-xl bg-brand/10 border border-brand/40 text-brand shrink-0">
+                                <i data-lucide="clock" class="w-6 h-6"></i>
+                            </div>
+                            <div class="space-y-1">
+                                <h4 class="text-sm font-bold text-white">Operating Hours</h4>
+                                <p class="text-xs text-slate-300">
+                                    <strong>AI DIY Portal:</strong> 24/7 Digital Access <br>
+                                    <strong>Home & In-Store:</strong> Monday - Sunday (08.00 - 21.00)
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: Interactive Booking Form -->
+                <div class="lg:col-span-7">
+                    <div class="glass-card rounded-3xl p-6 sm:p-10 border border-brand/30 shadow-neon relative">
+                        <h3 class="text-2xl font-display font-bold text-white mb-2">Book Service Reservation</h3>
+                        <p class="text-xs text-slate-400 mb-6">Fill in your details below and our dispatch coordinator will confirm within 15 minutes.</p>
+
+                        <form id="booking-form" class="space-y-4">
+                            <div class="grid sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Full Name *</label>
+                                    <input type="text" required placeholder="e.g. Alex Wijaya" class="w-full px-4 py-3 rounded-xl bg-darkbg-900 border border-slate-800 text-white text-sm focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand transition-all">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Phone Number *</label>
+                                    <input type="tel" required placeholder="e.g. 081234567890" class="w-full px-4 py-3 rounded-xl bg-darkbg-900 border border-slate-800 text-white text-sm focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand transition-all">
+                                </div>
+                            </div>
+
+                            <div class="grid sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Vehicle Type *</label>
+                                    <select required class="w-full px-4 py-3 rounded-xl bg-darkbg-900 border border-slate-800 text-slate-200 text-sm focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand transition-all">
+                                        <option value="">Select vehicle...</option>
+                                        <option value="car">Car (Mobil)</option>
+                                        <option value="motorcycle">Motorcycle (Sepeda Motor)</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Service Type *</label>
+                                    <select required class="w-full px-4 py-3 rounded-xl bg-darkbg-900 border border-slate-800 text-slate-200 text-sm focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand transition-all">
+                                        <option value="">Select service...</option>
+                                        <option value="ai-diy">AI DIY Repair Guidance</option>
+                                        <option value="home-service">Home Service Fleet</option>
+                                        <option value="in-store">In-Store Workshop (Sunter)</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="grid sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Preferred Date</label>
+                                    <input type="date" class="w-full px-4 py-3 rounded-xl bg-darkbg-900 border border-slate-800 text-slate-200 text-sm focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand transition-all">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Vehicle Model / Year</label>
+                                    <input type="text" placeholder="e.g. Honda Civic 2021" class="w-full px-4 py-3 rounded-xl bg-darkbg-900 border border-slate-800 text-white text-sm focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand transition-all">
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Symptom / Description</label>
+                                <textarea rows="3" placeholder="Describe issue (e.g. strange squeaking sound when braking)..." class="w-full px-4 py-3 rounded-xl bg-darkbg-900 border border-slate-800 text-white text-sm focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand transition-all"></textarea>
+                            </div>
+
+                            <button type="submit" class="w-full py-4 rounded-2xl bg-brand hover:bg-brand-light text-white font-bold text-sm uppercase tracking-wider shadow-neon hover:shadow-neon-lg transition-all duration-300 flex items-center justify-center gap-2">
+                                <i data-lucide="check-circle" class="w-5 h-5"></i>
+                                Submit Booking Request
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Section -->
+    <footer class="bg-darkbg-900 border-t border-slate-800/80 pt-16 pb-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-10 pb-12 border-b border-slate-800">
+                
+                <!-- Col 1: Brand Info -->
+                <div class="space-y-4 md:col-span-1">
+                    <a href="#" class="flex items-center gap-2">
+                        <div class="w-8 h-8 rounded-lg bg-brand/20 border border-brand flex items-center justify-center text-brand">
+                            <i data-lucide="cpu" class="w-5 h-5"></i>
+                        </div>
+                        <span class="font-display font-extrabold text-xl tracking-wider text-white">FIX<span class="text-brand">IT</span></span>
+                    </a>
+                    <p class="text-slate-400 text-xs leading-relaxed">
+                        AI-Powered Car & Motorcycle Repair. Delivering self-service AI guides, mobile home fleet repairs, and full workshop services.
+                    </p>
+                </div>
+
+                <!-- Col 2: Quick Links -->
+                <div class="space-y-3">
+                    <h4 class="text-xs font-bold text-white uppercase tracking-wider font-mono">Quick Navigation</h4>
+                    <ul class="space-y-2 text-xs text-slate-400">
+                        <li><a href="#services" class="hover:text-brand transition-colors">Our Services</a></li>
+                        <li><a href="#ai-diagnose" class="hover:text-brand transition-colors">AI Diagnostic Preview</a></li>
+                        <li><a href="#about" class="hover:text-brand transition-colors">About Us</a></li>
+                        <li><a href="#team" class="hover:text-brand transition-colors">Meet Our Team</a></li>
+                        <li><a href="#contact" class="hover:text-brand transition-colors">Book Reservation</a></li>
+                    </ul>
+                </div>
+
+                <!-- Col 3: Services -->
+                <div class="space-y-3">
+                    <h4 class="text-xs font-bold text-white uppercase tracking-wider font-mono">Services</h4>
+                    <ul class="space-y-2 text-xs text-slate-400">
+                        <li><a href="#services" class="hover:text-brand transition-colors">AI DIY Vehicle Fixing</a></li>
+                        <li><a href="#services" class="hover:text-brand transition-colors">On-Demand Home Service</a></li>
+                        <li><a href="#services" class="hover:text-brand transition-colors">In-Store Workshop Repairs</a></li>
+                        <li><a href="#services" class="hover:text-brand transition-colors">Motorcycle Engine Tuning</a></li>
+                        <li><a href="#services" class="hover:text-brand transition-colors">Emergency Roadside Assist</a></li>
+                    </ul>
+                </div>
+
+                <!-- Col 4: Location & Contact -->
+                <div class="space-y-3">
+                    <h4 class="text-xs font-bold text-white uppercase tracking-wider font-mono">Workshop Location</h4>
+                    <p class="text-xs text-slate-400 leading-relaxed">
+                        Jl. Gaya Motor Raya No. 3, Sunter II, Tanjung Priok, Jakarta Utara 14330
+                    </p>
+                    <p class="text-xs text-brand font-bold pt-1">
+                        Phone: (+62) 21 650-4848
+                    </p>
+                </div>
+
+            </div>
+
+            <!-- Bottom Copyright & Socials -->
+            <div class="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+                <p>© 2026 Fixit Automotive AI Inc. All rights reserved.</p>
+                <div class="flex items-center gap-4">
+                    <a href="#" class="hover:text-brand transition-colors"><i data-lucide="instagram" class="w-4 h-4"></i></a>
+                    <a href="#" class="hover:text-brand transition-colors"><i data-lucide="facebook" class="w-4 h-4"></i></a>
+                    <a href="#" class="hover:text-brand transition-colors"><i data-lucide="youtube" class="w-4 h-4"></i></a>
+                    <a href="#" class="hover:text-brand transition-colors"><i data-lucide="linkedin" class="w-4 h-4"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Custom Modal for Booking Confirmation -->
+    <div id="booking-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md hidden transition-opacity duration-300 opacity-0">
+        <div class="glass-card rounded-3xl p-8 max-w-md w-full border border-brand text-center space-y-6 shadow-neon-lg relative">
+            <div class="w-16 h-16 rounded-full bg-brand/20 border-2 border-brand flex items-center justify-center text-brand mx-auto shadow-neon">
+                <i data-lucide="check" class="w-8 h-8"></i>
+            </div>
+            <div class="space-y-2">
+                <h3 class="text-2xl font-display font-bold text-white">Reservation Received!</h3>
+                <p class="text-xs text-slate-300 leading-relaxed">
+                    Thank you for choosing <strong class="text-brand">Fixit</strong>. Our service coordinator will call you at your provided number within 15 minutes to confirm details.
+                </p>
+            </div>
+            <div class="p-4 rounded-xl bg-darkbg-900 border border-slate-800 text-left text-xs font-mono space-y-1">
+                <p class="text-slate-400">Location: <span class="text-white">Sunter II / Home Dispatch</span></p>
+                <p class="text-slate-400">Hotline: <span class="text-brand font-bold">(+62) 21 650-4848</span></p>
+            </div>
+            <button onclick="closeModal()" class="w-full py-3 rounded-xl bg-brand text-white font-bold text-xs uppercase tracking-wider hover:bg-brand-light transition-colors">
+                Back to Homepage
+            </button>
+        </div>
+    </div>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // Mobile Menu Toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        mobileNavLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+
+        // AI Diagnostic Simulator Switcher
+        const simData = {
+            squeaking: {
+                cause: 'Worn Brake Brake Pads / Wear Sensor Trigger',
+                action: 'DIY replace front ceramic pads (Difficulty: Moderate - 45 mins). Or order Fixit Home Service for quick driveway replacement.',
+                cost: 'Rp 250.000',
+                confidence: '98.2% Match'
+            },
+            clicking: {
+                cause: 'Low Battery Voltage / Starter Relay Misfire',
+                action: 'DIY test battery terminals & jumpstart. Fixit Mobile Fleet can arrive in 30 mins with replacement AGM Battery.',
+                cost: 'Rp 150.000 - Rp 950.000',
+                confidence: '95.6% Match'
+            },
+            smoke: {
+                cause: 'Coolant Leaking into Combustion Chamber / Head Gasket Issue',
+                action: 'Requires immediate engine overhaul at Fixit Sunter Workshop facility. Avoid driving to prevent engine seizure.',
+                cost: 'In-Store Inspection Needed',
+                confidence: '92.1% Match'
+            },
+            vibration: {
+                cause: 'Unbalanced Front Tires or Alignment Misalignment',
+                action: 'DIY check tire pressures. Schedule 3D Wheel Balancing at Fixit In-Store Service.',
+                cost: 'Rp 100.000',
+                confidence: '96.8% Match'
+            }
+        };
+
+        function setAiSim(key) {
+            const data = simData[key];
+            if (!data) return;
+
+            // Highlight active button
+            document.querySelectorAll('.sim-btn').forEach(btn => {
+                btn.classList.remove('border-brand', 'text-white');
+                btn.classList.add('border-slate-800', 'text-slate-300');
+            });
+
+            const activeBtn = document.getElementById(`sim-btn-${key}`);
+            if (activeBtn) {
+                activeBtn.classList.remove('border-slate-800', 'text-slate-300');
+                activeBtn.classList.add('border-brand', 'text-white');
+            }
+
+            // Update simulator text
+            document.getElementById('sim-cause').textContent = data.cause;
+            document.getElementById('sim-action').textContent = data.action;
+            document.getElementById('sim-cost').textContent = data.cost;
+            document.getElementById('sim-confidence').textContent = data.confidence;
+        }
+
+        // Booking Form Submission Modal Handler
+        const bookingForm = document.getElementById('booking-form');
+        const bookingModal = document.getElementById('booking-modal');
+
+        bookingForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            bookingModal.classList.remove('hidden');
+            setTimeout(() => {
+                bookingModal.classList.remove('opacity-0');
+            }, 10);
+        });
+
+        function closeModal() {
+            bookingModal.classList.add('opacity-0');
+            setTimeout(() => {
+                bookingModal.classList.add('hidden');
+                bookingForm.reset();
+            }, 300);
+        }
+    </script>
+</body>
+</html>
